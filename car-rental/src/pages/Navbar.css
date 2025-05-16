@@ -1,0 +1,171 @@
+.topnav {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  height: 60px;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  flex-wrap: wrap;
+  z-index: 1000;
+}
+
+.nav-left {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1; 
+}
+
+.nav-left a {
+  display: inline-block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.nav-left a:hover {
+  background-color: blue;
+  color: white;
+}
+
+.nav-right {
+  display: flex;
+  justify-content: flex-end;  
+  align-items: center;
+  margin-left: auto;  
+  position: relative;
+}
+
+.nav-right a {
+  display: inline-flex;
+  align-items: center;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.nav-right a:hover {
+  background-color: blue;
+  color: white;
+}
+
+.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.nav-mobile-dropdown {
+  display: none;
+  flex-direction: column;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #333;
+  width: 100%;
+  padding: 10px 0;
+  z-index: 999;
+}
+
+.nav-mobile-dropdown.show {
+  display: flex;
+}
+
+.nav-mobile-dropdown a {
+  padding: 12px 16px;
+  color: white;
+  text-decoration: none;
+  border-bottom: 1px solid #555;
+  font-size: 16px;
+}
+
+.nav-mobile-dropdown a:hover {
+  background-color: #555;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  margin-right: 10px;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px; /* Adjust this as per your logo size */
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-left {
+    display: none;
+  }
+
+  .nav-right {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    margin-left: auto; 
+    position: relative; 
+  }
+  
+  .nav-search {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin: 10px 0;
+  }
+
+  .hide-on-mobile {
+    display: none;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  background-color: #f9f9f9;
+  min-width: 140px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-content a:hover {
+  background-color: #e2e2e2;
+}
+
+.mobile-sub-links {
+  padding-left: 20px;
+}
+
+.mobile-sub-link {
+  display: block;
+  padding: 5px 0;
+  font-size: 0.95rem;
+}

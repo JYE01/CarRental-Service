@@ -45,7 +45,7 @@ const Home = () => {
           <input type="time" value={pickupTime} onChange={(e) => setPickupTime(e.target.value)} />
           <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
           <input type="time" value={returnTime} onChange={(e) => setReturnTime(e.target.value)} />
-          <button onClick={handleBookingSearch}>Select Car</button>
+          <button onClick={handleBookingSearch}>Search</button>
         </div>
       </div>
 
@@ -53,7 +53,11 @@ const Home = () => {
         <h3>Featured Cars</h3>
         <div className="car-cards">
           {cars.map((car) => (
-            <div className="car-card" key={car.id}>
+            <div className="car-card"
+              key={car.id}
+              onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}
+              style={{ cursor: "pointer" }}
+            >
               <img src={`/images/${car.carModel}.jpg`} alt={`${car.brand} ${car.carModel}`} className="car-image"/>
               <h4>{car.brand} {car.carModel}</h4>
               <p>Type: {car.carType}</p>
@@ -61,7 +65,7 @@ const Home = () => {
               <p>Mileage: {car.mileage}</p>
               <p>Fuel: {car.fuelType}</p>
               <p className="price">${car.pricePerDay}/day</p>
-              <button onClick={() => navigate(`/car/${car.id}`)}>Book Now</button>
+              <button onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}>Book Now</button>
             </div>
           ))}
         </div>
