@@ -52,13 +52,11 @@ const SearchBar = () => {
 
   return (
     <div className="search-container">
-      
-
       <div className="search-input-group">
         <button className="advanced-search-btn" onClick={handleAdvancedSearch}>
           Advanced Search
         </button>
-        
+
         <input
           type="text"
           className={`search-input ${isFocused ? 'expanded' : ''}`}
@@ -68,6 +66,7 @@ const SearchBar = () => {
           onFocus={() => setIsFocused(true)}
           onBlur={handleBlur}
         />
+        
         <button onClick={handleSearch}>Search</button>
       </div>
 

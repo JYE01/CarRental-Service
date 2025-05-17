@@ -22,8 +22,19 @@ const Home = () => {
       alert("Please fill in all fields.");
       return;
     }
+
+    //use UTC
+    const startISOString = `${pickupDate}T${pickupTime}:00.000Z`;
+    const endISOString = `${returnDate}T${returnTime}:00.000Z`;
+    console.log("Start (UTC ISO):", startISOString);
+
+    if (endISOString <= startISOString) {
+      alert("Return time must be after pickup time.");
+      return;
+    }
+
     navigate(
-      `/available-cars?pickupLocation=${pickupLocation}&pickupDate=${pickupDate}&pickupTime=${pickupTime}&returnDate=${returnDate}&returnTime=${returnTime}`
+      `/availableCars?pickupLocation=${encodeURIComponent(pickupLocation)}&start=${encodeURIComponent(startISOString)}&end=${encodeURIComponent(endISOString)}`
     );
   };
 
