@@ -30,7 +30,7 @@ const SearchBar = () => {
       `${car.brand} ${car.carModel}`.toLowerCase() === search.toLowerCase()
     );
     if (match) {
-      navigate(`/car/${match.id}`);
+      navigate(`/car/${match.carModel}`);
     } else {
       alert("Car not found.");
     }
@@ -40,25 +40,36 @@ const SearchBar = () => {
     setSearch(`${car.brand} ${car.carModel}`);
     setSuggestions([]);
     setIsFocused(false);
-    navigate(`/car/${car.id}`);
   };
 
   const handleBlur = () => {
     setTimeout(() => setIsFocused(false), 200);
   };
 
+  const handleAdvancedSearch = () => {
+    navigate('/advancedSearch');
+  };
+
   return (
     <div className="search-container">
-      <input
-        type="text"
-        className={`search-input ${isFocused ? 'expanded' : ''}`}
-        placeholder="Search car brand or model..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={handleBlur}
-      />
-      <button onClick={handleSearch}>Search</button>
+      
+
+      <div className="search-input-group">
+        <button className="advanced-search-btn" onClick={handleAdvancedSearch}>
+          Advanced Search
+        </button>
+        
+        <input
+          type="text"
+          className={`search-input ${isFocused ? 'expanded' : ''}`}
+          placeholder="Search car brand or model..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={handleBlur}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
 
       {suggestions.length > 0 && isFocused && (
         <ul className="autocomplete-list">

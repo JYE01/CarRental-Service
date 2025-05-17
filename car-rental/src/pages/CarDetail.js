@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { getCars } from '../FirebaseApi';
-import SearchBar from "../components/SearchBar";
 import { toast, ToastContainer } from "react-toastify";
 import "./CarDetail.css";
 
@@ -20,10 +19,6 @@ const CarDetail = () => {
 
     return (
         <div className="home-container" style={{ padding: "20px" }}>
-            <div className="title-search-container">
-                <SearchBar />
-            </div>
-
             {car ? (
                 <div style={{ border: "1px solid #ccc", padding: "20px", borderRadius: "8px" }}>
                     <img src={`/images/${car.carModel}.jpg`} alt={`${car.brand} ${car.carModel}`} className="car-detail-image"/>

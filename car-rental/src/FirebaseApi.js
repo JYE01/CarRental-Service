@@ -29,6 +29,9 @@ export const getCars = async () => {
                 pricePerDay: Number(getFieldValue(fields.pricePerDay)),
                 description: getFieldValue(fields.description),
                 vin: getFieldValue(fields.vin),
+                pickup: getFieldValue(fields.pickup),
+                pickupCity: getFieldValue(fields.pickupCity),
+                transmission: getFieldValue(fields.transmission),
             };
             return car;
         });
