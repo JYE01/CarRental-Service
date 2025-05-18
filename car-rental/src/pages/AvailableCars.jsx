@@ -15,9 +15,8 @@ const AvailableCars = () => {
     }, []);
 
     useEffect(() => {
-        const pickupLocation = searchParams.get("pickupLocation");
-        const start = searchParams.get("start");
-        const end = searchParams.get("end");
+        const bookingDetails = JSON.parse(localStorage.getItem("bookingDetails") || "{}");
+        const { pickupLocation, start, end } = bookingDetails;
 
         if (!start || !end) return;
 
@@ -61,7 +60,12 @@ const AvailableCars = () => {
             ) : (
                 <div className="car-cards">
                     {filteredCars.map(car => (
-                        <div className="car-card" key={car.id}>
+                        <div
+                            className="car-card"
+                            key={car.id}
+                            onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}
+                            style={{ cursor: 'pointer' }}
+                        >
                             <img src={`/images/${car.carModel}.jpg`} alt={`${car.brand} ${car.carModel}`} className="car-image"/>
                             <h4>{car.brand} {car.carModel}</h4>
                             <p>Type: {car.carType}</p>

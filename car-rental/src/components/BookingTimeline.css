@@ -1,0 +1,28 @@
+.timeline-container {
+    margin-top: 10px;
+}
+
+.timeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-top: 10px;
+}
+
+.hour-block {
+    width: calc(100% / 8 - 4px);
+    padding: 8px;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 4px;
+    background-color: #c8e6c9; /* green for free */
+}
+
+.hour-block.booked {
+    background-color: #ef9a9a; /* red for booked */
+}
+
+.hour-block.free:hover {
+    background-color: #a5d6a7;
+    cursor: pointer;
+}

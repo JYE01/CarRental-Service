@@ -7,3 +7,52 @@
   margin-bottom: 20px;
   object-fit: cover;
 }
+
+.car-detail-layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.car-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.car-detail-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.booking-form {
+  flex: 1;
+  min-width: 250px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.booking-form input {
+  display: block;
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.booking-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.booking-form button:hover {
+  background-color: #0056b3;
+}

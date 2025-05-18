@@ -9,7 +9,6 @@ const AdvancedSearch = () => {
   const [filters, setFilters] = useState({
     brand: '',
     carModel: '',
-    available: '',
     carType: '',
     fuelType: '',
     pickup: '',
@@ -47,7 +46,6 @@ const AdvancedSearch = () => {
     setFilters(prev => {
       const updated = { ...prev, [name]: value };
 
-      // Reset dependent fields if their filter depends on a changed value
       Object.keys(updated).forEach(key => {
         if (key !== name && key !== 'pricePerDayMax') {
           const dependentFiltered = getFilteredCarsExcluding(key, updated);
@@ -87,19 +85,14 @@ const AdvancedSearch = () => {
 
   const fields = [
     { label: 'Brand', name: 'brand' },
-    { label: 'Model', name: 'carModel' },
-    { label: 'Available', name: 'available', options: [
-      { label: 'Yes', value: 'true' },
-      { label: 'No', value: 'false' }
-    ]},
     { label: 'Type', name: 'carType' },
+    { label: 'Model', name: 'carModel' },
     { label: 'Fuel Type', name: 'fuelType' },
     { label: 'Pickup Location', name: 'pickup' },
     { label: 'Pickup City', name: 'pickupCity' },
     { label: 'Transmission', name: 'transmission' },
   ];
 
-  // 👇 Calculate dynamic max price based on other filters
   const priceSubset = getFilteredCarsExcluding('pricePerDayMax', filters);
   const maxPrice = priceSubset.length > 0 ? Math.max(...priceSubset.map(car => car.pricePerDay)) : 0;
 
@@ -111,13 +104,7 @@ const AdvancedSearch = () => {
           const carsSubset = getFilteredCarsExcluding(field.name, filters);
 
           let options;
-          if (field.name === 'available') {
-            const values = getUniqueValues('available', carsSubset);
-            options = values.map(value => ({
-              label: value === 'true' ? 'Yes' : value === 'false' ? 'No' : value,
-              value
-            }));
-          } else if (field.options) {
+          if (field.options) {
             options = field.options;
           } else {
             options = getUniqueValues(field.name, carsSubset).map(value => ({
@@ -144,8 +131,6 @@ const AdvancedSearch = () => {
             </div>
           );
         })}
-
-        {/* 💰 Updated Price Filter with Max Display */}
         <div className="filter-item">
           <label>
             Price Per Day (Max: ${maxPrice})

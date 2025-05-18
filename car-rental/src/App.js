@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import CarDetail from './pages/CarDetail';
 import AdvancedSearch from './components/AdvancedSearch';
 import AvailableCars from './pages/AvailableCars';
+import Booking from './pages/Booking';
 // import { CartProvider } from './components/CartContext';
 // import Cart from './pages/Cart';
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/car/:name" element={<CarDetail />} />
           <Route path="/advancedSearch" element={<AdvancedSearch />} />
           <Route path="/availableCars" element={<AvailableCars />} />
+          <Route path="/booking" element={<Booking />} />
         </Route>
       </Routes>
     // </CartProvider>

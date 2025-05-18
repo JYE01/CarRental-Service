@@ -13,6 +13,10 @@ const Home = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => { //clear local storage when homepage loaded
+    localStorage.removeItem("bookingDetails");
+  }, []);
+
   useEffect(() => {
     getCars().then((data) => setCars(data));
   }, []);
@@ -33,9 +37,13 @@ const Home = () => {
       return;
     }
 
-    navigate(
-      `/availableCars?pickupLocation=${encodeURIComponent(pickupLocation)}&start=${encodeURIComponent(startISOString)}&end=${encodeURIComponent(endISOString)}`
-    );
+    localStorage.setItem("bookingDetails", JSON.stringify({
+      pickupLocation,
+      start: startISOString,
+      end: endISOString,
+    }));
+
+    navigate("/availableCars");
   };
 
   return (
@@ -76,7 +84,20 @@ const Home = () => {
               <p>Mileage: {car.mileage}</p>
               <p>Fuel: {car.fuelType}</p>
               <p className="price">${car.pricePerDay}/day</p>
-              <button onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}>Book Now</button>
+              <button
+                disabled={!car.available}
+                onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}
+                style={{
+                  backgroundColor: car.available ? "#007bff" : "red",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 20px",
+                  cursor: car.available ? "pointer" : "not-allowed",
+                  opacity: car.available ? 1 : 0.7,
+                }}
+              >
+                {car.available ? "Book Now" : "Unavailable"}
+              </button>
             </div>
           ))}
         </div>
