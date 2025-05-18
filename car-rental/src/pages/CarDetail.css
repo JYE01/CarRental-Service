@@ -1,58 +1,101 @@
-.car-detail-image {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  object-fit: cover;
-}
-
 .car-detail-layout {
   display: flex;
-  gap: 30px;
-  align-items: flex-start;
   flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .car-info {
-  flex: 1;
-  min-width: 300px;
+  flex: 1 1 350px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin-top: 17px;
 }
 
 .car-detail-image {
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  border-radius: 8px;
+  max-width: 500px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.car-info h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.car-info h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.car-info p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #555;
 }
 
 .booking-form {
-  flex: 1;
-  min-width: 250px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  flex: 1 1 320px;
+  padding: 25px;
+  border-radius: 12px;
+  background-color: #f4f7fa;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.booking-form input {
-  display: block;
-  margin-bottom: 10px;
-  padding: 8px;
-  width: 100%;
-  box-sizing: border-box;
+.booking-left, .booking-right {
+    flex: 1;
 }
 
-.booking-form button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.booking-left h2 {
+    margin-bottom: 10px;
 }
 
-.booking-form button:hover {
-  background-color: #0056b3;
+.booking-left input[type="date"] {
+    margin-bottom: 10px;
+}
+
+.booking-right input[type="date"],
+.booking-right input[type="time"] {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.booking-right button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.booking-right button:hover {
+    background-color: #0056b3;
+}
+
+
+@media (max-width: 768px) {
+  .car-detail-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .car-info,
+  .booking-form {
+    width: 100%;
+    max-width: 600px;
+  }
 }

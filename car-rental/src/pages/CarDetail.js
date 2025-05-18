@@ -58,6 +58,12 @@ const CarDetail = () => {
             return;
         }
 
+        const now = new Date().toISOString();
+        if (startISOString <= now) {
+            toast.error("You can only book for future events.");
+            return;
+        }
+
         const hasConflict = car.bookings?.some(booking =>
             isOverlapping(startISOString, endISOString, booking.start, booking.end)
         );
@@ -83,6 +89,17 @@ const CarDetail = () => {
         navigate("/booking");
     };
 
+    const getCurrentTimeString = () => {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    };
+
+    const todayStr = new Date().toISOString().split("T")[0];
+    const minPickupTime = pickupDate === todayStr ? getCurrentTimeString() : "00:00";
+    const minReturnTime = returnDate === todayStr ? getCurrentTimeString() : "00:00";
+
     return (
         <div className="home-container" style={{ padding: "20px" }}>
             {car ? (
@@ -107,13 +124,14 @@ const CarDetail = () => {
 
                     {car.available ? (
                         <div className="booking-form">
-                            <h2>Book this Car</h2>
-                            <p><strong>Pickup Location:</strong> {car.pickup} ({car.pickupCity})</p>
-                            
-                            <div style={{ marginTop: "30px" }}>
+                            <div className="booking-left">
+                                <h2>Book this Car</h2>
+                                <p><strong>Pickup Location:</strong> {car.pickup} ({car.pickupCity})</p>
+
                                 <h3>Booking Overview for a Day</h3>
                                 <input
                                     type="date"
+                                    min={todayStr}
                                     value={timelineDate.toISOString().split("T")[0]}
                                     onChange={(e) => setTimelineDate(new Date(e.target.value))}
                                 />
@@ -122,15 +140,44 @@ const CarDetail = () => {
                                     bookings={car.bookings || []}
                                 />
                             </div>
-                            <h3><strong>Pick up</strong></h3>
-                            <input type="date" value={pickupDate} onChange={(e) => setPickupDate(e.target.value)} placeholder="Pickup Date" />
-                            <input type="time" value={pickupTime} onChange={(e) => setPickupTime(e.target.value)} placeholder="Pickup Time" />
-                            <h3><strong>Return</strong></h3>
-                            <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} placeholder="Return Date" />
-                            <input type="time" value={returnTime} onChange={(e) => setReturnTime(e.target.value)} placeholder="Return Time" />
-                            <button onClick={handleBooking}>Rent</button>
+
+                            <div className="booking-right">
+                                <h3><strong>Pick up</strong></h3>
+                                <input
+                                    type="date"
+                                    min={todayStr}
+                                    value={pickupDate}
+                                    onChange={(e) => setPickupDate(e.target.value)}
+                                    placeholder="Pickup Date"
+                                />
+                                <input
+                                    type="time"
+                                    min={minPickupTime}
+                                    value={pickupTime}
+                                    onChange={(e) => setPickupTime(e.target.value)}
+                                    placeholder="Pickup Time"
+                                />
+
+                                <h3><strong>Return</strong></h3>
+                                <input
+                                    type="date"
+                                    min={pickupDate || todayStr}
+                                    value={returnDate}
+                                    onChange={(e) => setReturnDate(e.target.value)}
+                                    placeholder="Return Date"
+                                />
+                                <input
+                                    type="time"
+                                    min={minReturnTime}
+                                    value={returnTime}
+                                    onChange={(e) => setReturnTime(e.target.value)}
+                                    placeholder="Return Time"
+                                />
+
+                                <button onClick={handleBooking}>Rent</button>
+                            </div>
                         </div>
-                        ) : (
+                    ) : (
                         <div className="booking-form">
                             <h2>This car is currently unavailable for booking.</h2>
                         </div>

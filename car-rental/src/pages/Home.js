@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getCars } from "../FirebaseApi"
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import "./Home.css";
 
 const Home = () => {
@@ -37,6 +38,13 @@ const Home = () => {
       return;
     }
 
+    const now = new Date().toISOString();
+
+    if (startISOString <= now) {
+      toast.error("You can only book for future events.");
+      return;
+    }
+
     localStorage.setItem("bookingDetails", JSON.stringify({
       pickupLocation,
       start: startISOString,
@@ -45,6 +53,17 @@ const Home = () => {
 
     navigate("/availableCars");
   };
+
+  const getCurrentTimeString = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+
+  const todayStr = new Date().toISOString().split("T")[0];
+  const minPickupTime = pickupDate === todayStr ? getCurrentTimeString() : "00:00";
+  const minReturnTime = returnDate === todayStr ? getCurrentTimeString() : "00:00";
 
   return (
     <div className="home-container">
@@ -60,10 +79,10 @@ const Home = () => {
             <option value="Perth, WA">Perth, WA</option>
             <option value="Hobart, TAS">Hobart, TAS</option>
           </select>
-          <input type="date" value={pickupDate} onChange={(e) => setPickupDate(e.target.value)} />
-          <input type="time" value={pickupTime} onChange={(e) => setPickupTime(e.target.value)} />
-          <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
-          <input type="time" value={returnTime} onChange={(e) => setReturnTime(e.target.value)} />
+          <input type="date" value={pickupDate} min={todayStr} onChange={(e) => setPickupDate(e.target.value)} />
+          <input type="time" value={pickupTime} min={minPickupTime} onChange={(e) => setPickupTime(e.target.value)} />
+          <input type="date" value={returnDate} min={pickupDate || todayStr} onChange={(e) => setReturnDate(e.target.value)} />
+          <input type="time" value={returnTime} min={minReturnTime} onChange={(e) => setReturnTime(e.target.value)} />
           <button onClick={handleBookingSearch}>Search</button>
         </div>
       </div>
@@ -102,6 +121,7 @@ const Home = () => {
           ))}
         </div>
       </div>
+      <ToastContainer />
     </div>
   )
 }
