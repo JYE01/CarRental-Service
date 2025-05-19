@@ -30,9 +30,16 @@ const CarDetail = () => {
             const end = new Date(bookingDetails.end);
 
             setPickupDate(start.toISOString().split("T")[0]);
-            setPickupTime(start.toISOString().split("T")[1].slice(0, 5)); 
+            setPickupTime(start.toISOString().split("T")[1].slice(0, 5));
             setReturnDate(end.toISOString().split("T")[0]);
-            setReturnTime(end.toISOString().split("T")[1].slice(0, 5));  
+            setReturnTime(end.toISOString().split("T")[1].slice(0, 5));
+        } else {
+            const now = new Date();
+            const dateStr = now.toISOString().split("T")[0];
+            const timeStr = now.toTimeString().split(":").slice(0, 2).join(":");
+
+            setPickupDate(dateStr);
+            setPickupTime(timeStr);
         }
     }, [name]);
 
@@ -83,6 +90,7 @@ const CarDetail = () => {
             year: car.yearOfManufacture,
             mileage: car.mileage,
             pricePerDay: car.pricePerDay,
+            vin: car.vin,
         };
 
         localStorage.setItem("bookingDetails", JSON.stringify(bookingData));
