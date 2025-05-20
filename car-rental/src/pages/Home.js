@@ -16,10 +16,20 @@ const Home = () => {
 
   useEffect(() => { //clear local storage when homepage loaded
     localStorage.removeItem("bookingDetails");
+    localStorage.removeItem("reservationForm")
   }, []);
 
   useEffect(() => {
     getCars().then((data) => setCars(data));
+  }, []);
+
+  useEffect(() => {
+    const now = new Date();
+    const dateStr = now.toISOString().split("T")[0];
+    const timeStr = now.toTimeString().split(":").slice(0, 2).join(":");
+
+    setPickupDate(dateStr);
+    setPickupTime(timeStr);
   }, []);
 
   const handleBookingSearch = () => {

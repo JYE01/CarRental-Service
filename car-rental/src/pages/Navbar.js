@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingCart, User, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import './Navbar.css';
 import SearchBar from "../components/SearchBar";
 
@@ -12,9 +12,6 @@ const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  // const { cart } = useCart();
-  // const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
   const handleMouseEnter = (type) => setActiveDropdown(type);
   const handleMouseLeave = () => setActiveDropdown(null);
 
@@ -55,13 +52,6 @@ const Navbar = () => {
 
         <div className="nav-right">
           <SearchBar />
-          {/* <Link to="/Cart" className={location.pathname === "/Cart" ? "active" : ""}>
-            {cartItemCount > 0 && (
-              <span className="cart-badge">{cartItemCount}</span>
-            )}
-            <ShoppingCart size={18} style={{ verticalAlign: "middle", marginRight: "5px" }} />
-            <span className="hide-on-mobile">Cart</span>
-          </Link> */}
         </div>
       </div>
 

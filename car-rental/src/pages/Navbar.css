@@ -103,7 +103,7 @@
 }
 
 .logo {
-  height: 40px; /* Adjust this as per your logo size */
+  height: 40px;
 }
 
 @media (max-width: 768px) {

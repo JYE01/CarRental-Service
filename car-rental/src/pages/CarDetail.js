@@ -82,9 +82,11 @@ const CarDetail = () => {
 
         const bookingData = {
             pickupLocation: car.pickup,
+            pickupCity: car.pickupCity,
             start: startISOString,
             end: endISOString,
             brand: car.brand,
+            model: car.carModel,
             type: car.carType,
             fuel: car.fuelType,
             year: car.yearOfManufacture,

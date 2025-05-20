@@ -6,12 +6,10 @@ import CarDetail from './pages/CarDetail';
 import AdvancedSearch from './components/AdvancedSearch';
 import AvailableCars from './pages/AvailableCars';
 import Booking from './pages/Booking';
-// import { CartProvider } from './components/CartContext';
-// import Cart from './pages/Cart';
+import Order from './pages/Order';
 
 function App() {
   return (
-    // <CartProvider>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element = {<Home />} />
@@ -19,9 +17,9 @@ function App() {
           <Route path="/advancedSearch" element={<AdvancedSearch />} />
           <Route path="/availableCars" element={<AvailableCars />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/order" element={<Order />} />
         </Route>
       </Routes>
-    // </CartProvider>
   );
 }
 
