@@ -11,7 +11,7 @@ const Home = () => {
   const [pickupTime, setPickupTime] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
-
+  const [visibleCount, setVisibleCount] = useState(8);
   const navigate = useNavigate();
 
   useEffect(() => { //clear local storage when homepage loaded
@@ -64,6 +64,14 @@ const Home = () => {
     navigate("/availableCars");
   };
 
+  const showMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 8, cars.length));
+  };
+
+  const showLess = () => {
+    setVisibleCount(8);
+  };
+
   const getCurrentTimeString = () => {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0');
@@ -100,7 +108,7 @@ const Home = () => {
       <div className="ads-section">
         <h3>Featured Cars</h3>
         <div className="car-cards">
-          {cars.map((car) => (
+          {cars.slice(0, visibleCount).map((car) => (
             <div className="car-card"
               key={car.id}
               onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}
@@ -130,6 +138,21 @@ const Home = () => {
             </div>
           ))}
         </div>
+
+        {cars.length > 8 && (
+          <div className="show-more-less-buttons" style={{ marginTop: "20px", textAlign: "center" }}>
+            {visibleCount < cars.length && (
+              <button onClick={showMore} className="show-more-button" style={{ marginRight: "10px" }}>
+                Show More
+              </button>
+            )}
+            {visibleCount > 8 && (
+              <button onClick={showLess} className="show-less-button">
+                Show Less
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <ToastContainer />
     </div>

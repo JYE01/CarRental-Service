@@ -94,7 +94,6 @@ export const updateCarBookings = async (vin, newBooking) => {
     const documentId = car.id;
     const docUrl = `${BASE_URL}/${documentId}?updateMask.fieldPaths=bookings`;
 
-    // Convert existing bookings to Firestore format
     const existingBookings = car.bookings.map(b => ({
       mapValue: {
         fields: {
@@ -104,7 +103,6 @@ export const updateCarBookings = async (vin, newBooking) => {
       }
     }));
 
-    // Add the new booking
     const updatedBookings = [
       ...existingBookings,
       {
