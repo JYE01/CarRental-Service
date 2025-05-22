@@ -16,6 +16,7 @@ const AdvancedSearch = () => {
     transmission: '',
     pricePerDayMax: '',
   });
+  const [visibleCount, setVisibleCount] = useState(20);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,6 +59,14 @@ const AdvancedSearch = () => {
 
       return updated;
     });
+  };
+
+  const showMore = () => {
+    setVisibleCount(prev => Math.min(prev + 20, filteredCars.length));
+  };
+
+  const showLess = () => {
+    setVisibleCount(20);
   };
 
   const getFilteredCarsExcluding = (excludeKey, currentFilters) => {
@@ -150,25 +159,41 @@ const AdvancedSearch = () => {
       <div className="results">
         <h3>Matching Cars ({filteredCars.length})</h3>
         {filteredCars.length > 0 ? (
+          <>
             <ul className="car-list">
-                {filteredCars.map(car => (
-                    <li
+                {filteredCars.slice(0, visibleCount).map(car => (
+                  <li
                     key={car.id}
                     className="car-item"
                     onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}
                     style={{ cursor: 'pointer' }}
-                    >
+                  >
                     <img
-                        src={`/images/${car.carModel}.jpg`}
-                        alt={`${car.brand} ${car.carModel}`}
-                        className="car-image"
+                      src={`/images/${car.carModel}.jpg`}
+                      alt={`${car.brand} ${car.carModel}`}
+                      className="car-image"
                     />
                     <div className="car-details">
-                        <strong>{car.brand} {car.carModel}</strong> - ${car.pricePerDay}/day - {car.fuelType} - {car.pickup} - {car.pickupCity} - {car.transmission}
+                      <strong>{car.brand} {car.carModel}</strong> - ${car.pricePerDay}/day - {car.fuelType} - {car.pickup} - {car.pickupCity} - {car.transmission} - 
+                      <span style={{ color: car.available ? 'green' : 'red', marginLeft: '5px' }}>
+                        {car.available ? 'Available' : 'Unavailable'}
+                      </span>
                     </div>
-                    </li>
+                  </li>
                 ))}
             </ul>
+
+            {filteredCars.length > 20 && (
+              <div className="button-group">
+                {visibleCount < filteredCars.length && (
+                  <button onClick={showMore}>Show More</button>
+                )}
+                {visibleCount > 20 && (
+                  <button onClick={showLess}>Show Less</button>
+                )}
+              </div>
+            )}
+          </>
         ) : (
           <p>There are no matching cars.</p>
         )}
