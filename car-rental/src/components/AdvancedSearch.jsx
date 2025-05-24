@@ -15,6 +15,7 @@ const AdvancedSearch = () => {
     pickupCity: '',
     transmission: '',
     pricePerDayMax: '',
+    keyword: '',
   });
   const [visibleCount, setVisibleCount] = useState(20);
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const AdvancedSearch = () => {
     let filtered = [...allCars];
 
     Object.entries(filters).forEach(([key, value]) => {
-      if (value !== '') {
+      if (value !== '' && key !== 'keyword') {
         if (key === 'pricePerDayMax') {
           filtered = filtered.filter(car => car.pricePerDay <= parseFloat(value));
         } else {
@@ -37,6 +38,17 @@ const AdvancedSearch = () => {
         }
       }
     });
+
+    if (filters.keyword.trim() !== '') {
+      const keyword = filters.keyword.toLowerCase();
+      filtered = filtered.filter(car =>
+        car.brand.toLowerCase().includes(keyword) ||
+        car.carModel.toLowerCase().includes(keyword) ||
+        car.carType.toLowerCase().includes(keyword) ||
+        car.pickup.toLowerCase().includes(keyword) ||
+        car.pickupCity.toLowerCase().includes(keyword)
+      );
+    }
 
     setFilteredCars(filtered);
   }, [filters, allCars]);
@@ -48,8 +60,8 @@ const AdvancedSearch = () => {
       const updated = { ...prev, [name]: value };
 
       Object.keys(updated).forEach(key => {
-        if (key !== name && key !== 'pricePerDayMax') {
-          const dependentFiltered = getFilteredCarsExcluding(key, updated);
+        if (key !== name && key !== 'pricePerDayMax' && key !== 'keyword') {
+          const dependentFiltered = getFilteredCarsExcluding(key, updated, true);
           const validValues = getUniqueValues(key, dependentFiltered);
           if (!validValues.includes(updated[key])) {
             updated[key] = '';
@@ -69,10 +81,10 @@ const AdvancedSearch = () => {
     setVisibleCount(20);
   };
 
-  const getFilteredCarsExcluding = (excludeKey, currentFilters) => {
+  const getFilteredCarsExcluding = (excludeKey, currentFilters, includeKeyword = false) => {
     let filtered = [...allCars];
     Object.entries(currentFilters).forEach(([key, value]) => {
-      if (value !== '' && key !== excludeKey) {
+      if (value !== '' && key !== excludeKey && key !== 'keyword') {
         if (key === 'pricePerDayMax') {
           filtered = filtered.filter(car => car.pricePerDay <= parseFloat(value));
         } else {
@@ -82,6 +94,18 @@ const AdvancedSearch = () => {
         }
       }
     });
+
+    if (includeKeyword && currentFilters.keyword.trim() !== '') {
+      const keyword = currentFilters.keyword.toLowerCase();
+      filtered = filtered.filter(car =>
+        car.brand.toLowerCase().includes(keyword) ||
+        car.carModel.toLowerCase().includes(keyword) ||
+        car.carType.toLowerCase().includes(keyword) ||
+        car.pickup.toLowerCase().includes(keyword) ||
+        car.pickupCity.toLowerCase().includes(keyword)
+      );
+    }
+
     return filtered;
   };
 
@@ -102,25 +126,29 @@ const AdvancedSearch = () => {
     { label: 'Transmission', name: 'transmission' },
   ];
 
-  const priceSubset = getFilteredCarsExcluding('pricePerDayMax', filters);
+  const priceSubset = getFilteredCarsExcluding('pricePerDayMax', filters, true);
   const maxPrice = priceSubset.length > 0 ? Math.max(...priceSubset.map(car => car.pricePerDay)) : 0;
 
   return (
     <div className="advanced-search-container">
       <h2>Advanced Search</h2>
+      <div className="search-bar">
+        <input
+          type="text"
+          name="keyword"
+          value={filters.keyword}
+          onChange={handleChange}
+          placeholder="Search by keyword (e.g. Toyota, SUV, Sydney)..."
+        />
+      </div>
       <div className="filters-grid">
         {fields.map(field => {
-          const carsSubset = getFilteredCarsExcluding(field.name, filters);
+          const carsSubset = getFilteredCarsExcluding(field.name, filters, true);
 
-          let options;
-          if (field.options) {
-            options = field.options;
-          } else {
-            options = getUniqueValues(field.name, carsSubset).map(value => ({
-              label: value,
-              value
-            }));
-          }
+          const options = getUniqueValues(field.name, carsSubset).map(value => ({
+            label: value,
+            value
+          }));
 
           return (
             <div key={field.name} className="filter-item">
@@ -161,26 +189,26 @@ const AdvancedSearch = () => {
         {filteredCars.length > 0 ? (
           <>
             <ul className="car-list">
-                {filteredCars.slice(0, visibleCount).map(car => (
-                  <li
-                    key={car.id}
-                    className="car-item"
-                    onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <img
-                      src={`/images/${car.carModel}.jpg`}
-                      alt={`${car.brand} ${car.carModel}`}
-                      className="car-image"
-                    />
-                    <div className="car-details">
-                      <strong>{car.brand} {car.carModel}</strong> - ${car.pricePerDay}/day - {car.fuelType} - {car.pickup} - {car.pickupCity} - {car.transmission} - 
-                      <span style={{ color: car.available ? 'green' : 'red', marginLeft: '5px' }}>
-                        {car.available ? 'Available' : 'Unavailable'}
-                      </span>
-                    </div>
-                  </li>
-                ))}
+              {filteredCars.slice(0, visibleCount).map(car => (
+                <li
+                  key={car.id}
+                  className="car-item"
+                  onClick={() => navigate(`/car/${encodeURIComponent(car.carModel)}`)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <img
+                    src={`/images/${car.carModel}.jpg`}
+                    alt={`${car.brand} ${car.carModel}`}
+                    className="car-image"
+                  />
+                  <div className="car-details">
+                    <strong>{car.brand} {car.carModel}</strong> - ${car.pricePerDay}/day - {car.fuelType} - {car.pickup} - {car.pickupCity} - {car.transmission} - 
+                    <span style={{ color: car.available ? 'green' : 'red', marginLeft: '5px' }}>
+                      {car.available ? 'Available' : 'Unavailable'}
+                    </span>
+                  </div>
+                </li>
+              ))}
             </ul>
 
             {filteredCars.length > 20 && (

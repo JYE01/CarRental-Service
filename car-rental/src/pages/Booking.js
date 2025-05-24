@@ -80,8 +80,21 @@ const Booking = () => {
   };
 
   const handleSubmit = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
     if (!form.name || !form.phone || !form.email || !form.license || !bookingDetails) {
-      alert('Please fill all required fields.');
+      toast.error('Please fill all required fields.');
+      return;
+    }
+
+    if (!emailRegex.test(form.email)) {
+      toast.error('Please enter a valid email address.');
+      return;
+    }
+
+    if (!phoneRegex.test(form.phone)) {
+      toast.error('Phone number must be 10 digits or in numbers only.');
       return;
     }
 
@@ -100,8 +113,10 @@ const Booking = () => {
 
     try {
       await safeBookingTransaction(order);
-      alert('Order submitted successfully!');
-      navigate('/order');
+      toast.success('Order submitted successfully!');
+      setTimeout(() => {
+        navigate('/order');
+      }, 1000);//time delay for show toast message
     } catch (error) {
       if (error.message === 'Booking conflict') {
         toast.error("This time slot is already booked. Please choose another time.");
